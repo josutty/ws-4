@@ -1,0 +1,310 @@
+{
+  "table": null,
+  "controls": [
+    {
+      "name": "Forgot password?",
+      "pressed": null,
+      "popup": null,
+      "contrast": 5.7,
+      "cy": 425,
+      "inGroup": null,
+      "height": 17,
+      "fontFamily": "IBM Plex Sans",
+      "fontSize": 13,
+      "fontWeight": 400,
+      "color": "rgb(14, 107, 168)",
+      "background": "rgba(0, 0, 0, 0)",
+      "textAlign": "center",
+      "textTransform": "none",
+      "letterSpacing": 0,
+      "whiteSpace": "normal",
+      "paddingX": 0,
+      "paddingY": 0,
+      "borderRight": "none",
+      "borderRadius": 0,
+      "position": "static",
+      "deco": "underline",
+      "bgImage": null,
+      "row": "Password"
+    },
+    {
+      "name": "Sign in",
+      "pressed": null,
+      "popup": null,
+      "contrast": 5.7,
+      "cy": 511,
+      "inGroup": null,
+      "height": 38,
+      "fontFamily": "IBM Plex Sans",
+      "fontSize": 14,
+      "fontWeight": 500,
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(14, 107, 168)",
+      "textAlign": "center",
+      "textTransform": "none",
+      "letterSpacing": 0,
+      "whiteSpace": "nowrap",
+      "paddingX": 14,
+      "paddingY": 0,
+      "borderRight": "rgba(0, 0, 0, 0)",
+      "borderRadius": 5,
+      "position": "static",
+      "deco": "none",
+      "bgImage": null,
+      "row": null
+    },
+    {
+      "name": "Sign in with VECVNet SSO",
+      "pressed": null,
+      "popup": null,
+      "contrast": 7.5,
+      "cy": 596,
+      "inGroup": null,
+      "height": 38,
+      "fontFamily": "IBM Plex Sans",
+      "fontSize": 13.5,
+      "fontWeight": 500,
+      "color": "rgb(66, 87, 106)",
+      "background": "rgb(255, 255, 255)",
+      "textAlign": "center",
+      "textTransform": "none",
+      "letterSpacing": 0,
+      "whiteSpace": "nowrap",
+      "paddingX": 14,
+      "paddingY": 0,
+      "borderRight": "rgb(220, 227, 233)",
+      "borderRadius": 5,
+      "position": "static",
+      "deco": "none",
+      "bgImage": null,
+      "row": null
+    }
+  ],
+  "decor": [],
+  "palette": {
+    "rgb(22, 34, 44)": 14,
+    "rgb(255, 255, 255)": 11,
+    "rgb(95, 176, 222)": 2,
+    "rgb(183, 205, 221)": 5,
+    "rgba(255, 255, 255, 0.09)": 1,
+    "rgba(255, 255, 255, 0.14)": 1,
+    "rgb(107, 124, 138)": 6,
+    "rgb(66, 87, 106)": 5,
+    "rgb(220, 227, 233)": 3,
+    "rgb(179, 38, 30)": 4,
+    "rgb(14, 107, 168)": 3,
+    "rgba(183, 205, 221, 0.75)": 2,
+    "rgb(11, 24, 34)": 1,
+    "rgb(18, 41, 58)": 1,
+    "rgb(14, 58, 74)": 1
+  },
+  "page": {
+    "background": "rgb(244, 246, 248)",
+    "gradient": {
+      "type": "linear",
+      "stops": [
+        "rgb(11, 24, 34)",
+        "rgb(18, 41, 58)",
+        "rgb(14, 58, 74)"
+      ],
+      "angle": 150,
+      "raw": "linear-gradient(150deg, rgb(11, 24, 34) 0%, rgb(18, 41, 58) 55%, rgb(14, 58, 74) 100%)",
+      "on": "#login"
+    }
+  },
+  "card": {
+    "background": "rgb(255, 255, 255)",
+    "radius": 9,
+    "width": 400,
+    "centered": true
+  },
+  "texts": [
+    {
+      "text": "VECV",
+      "deco": "none",
+      "contrast": 15.1,
+      "inCard": false,
+      "align": "mixed",
+      "cy": 165,
+      "row": null,
+      "fontSize": 23,
+      "fontWeight": 700,
+      "color": "rgb(255, 255, 255)"
+    },
+    {
+      "text": "plan",
+      "deco": "none",
+      "contrast": 6.3,
+      "inCard": false,
+      "align": "left",
+      "cy": 165,
+      "row": null,
+      "fontSize": 23,
+      "fontWeight": 700,
+      "color": "rgb(95, 176, 222)"
+    },
+    {
+      "text": "S&OP-1A",
+      "deco": "none",
+      "contrast": 7,
+      "inCard": false,
+      "align": "left",
+      "cy": 202,
+      "row": "Jul 2026",
+      "fontSize": 11.5,
+      "fontWeight": 400,
+      "color": "rgb(183, 205, 221)"
+    },
+    {
+      "text": "Jul 2026",
+      "deco": "none",
+      "contrast": 11.5,
+      "inCard": false,
+      "align": "left",
+      "cy": 202,
+      "row": "S&OP-1A",
+      "fontSize": 11.5,
+      "fontWeight": 600,
+      "color": "rgb(255, 255, 255)"
+    },
+    {
+      "text": "· Indent closes",
+      "deco": "none",
+      "contrast": 7,
+      "inCard": false,
+      "align": "right",
+      "cy": 202,
+      "row": "S&OP-1A",
+      "fontSize": 11.5,
+      "fontWeight": 400,
+      "color": "rgb(183, 205, 221)"
+    },
+    {
+      "text": "15 Jul, 23:59 IST",
+      "deco": "none",
+      "contrast": 11.5,
+      "inCard": false,
+      "align": "right",
+      "cy": 202,
+      "row": "S&OP-1A",
+      "fontSize": 11.5,
+      "fontWeight": 600,
+      "color": "rgb(255, 255, 255)"
+    },
+    {
+      "text": "Sign in",
+      "deco": "none",
+      "contrast": 16.2,
+      "inCard": true,
+      "align": "left",
+      "cy": 274,
+      "row": null,
+      "fontSize": 19,
+      "fontWeight": 600,
+      "color": "rgb(22, 34, 44)"
+    },
+    {
+      "text": "Dealer code or work email.",
+      "deco": "none",
+      "contrast": 4.3,
+      "inCard": true,
+      "align": "left",
+      "cy": 303,
+      "row": null,
+      "fontSize": 13,
+      "fontWeight": 400,
+      "color": "rgb(107, 124, 138)"
+    },
+    {
+      "text": "Dealer code or email",
+      "deco": "none",
+      "contrast": 7.5,
+      "inCard": true,
+      "align": "left",
+      "cy": 350,
+      "row": null,
+      "fontSize": 12,
+      "fontWeight": 600,
+      "color": "rgb(66, 87, 106)"
+    },
+    {
+      "text": "Password",
+      "deco": "none",
+      "contrast": 7.5,
+      "inCard": true,
+      "align": "mixed",
+      "cy": 425,
+      "row": null,
+      "fontSize": 12,
+      "fontWeight": 600,
+      "color": "rgb(66, 87, 106)"
+    },
+    {
+      "text": "or",
+      "deco": "none",
+      "contrast": 4.3,
+      "inCard": true,
+      "align": "center",
+      "cy": 552,
+      "row": null,
+      "fontSize": 11.5,
+      "fontWeight": 400,
+      "color": "rgb(107, 124, 138)"
+    },
+    {
+      "text": "Trouble signing in? Contact Sales Planning support",
+      "deco": "none",
+      "contrast": 4.3,
+      "inCard": true,
+      "align": "center",
+      "cy": 649,
+      "row": null,
+      "fontSize": 11.5,
+      "fontWeight": 400,
+      "color": "rgb(107, 124, 138)"
+    },
+    {
+      "text": "Prototype · your role and verticals come from your account",
+      "deco": "none",
+      "contrast": 5.8,
+      "inCard": false,
+      "align": "center",
+      "cy": 731,
+      "row": null,
+      "fontSize": 11,
+      "fontWeight": 400,
+      "color": "rgba(183, 205, 221, 0.75)"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "Dealer code or email",
+      "background": "rgb(255, 255, 255)",
+      "border": "rgb(220, 227, 233)",
+      "radius": 5,
+      "height": 38,
+      "fontSize": 14
+    },
+    {
+      "name": "Password",
+      "background": "rgb(255, 255, 255)",
+      "border": "rgb(220, 227, 233)",
+      "radius": 5,
+      "height": 38,
+      "fontSize": 14
+    }
+  ],
+  "gradients": [
+    {
+      "where": "#login",
+      "type": "linear",
+      "stops": [
+        "rgb(11, 24, 34)",
+        "rgb(18, 41, 58)",
+        "rgb(14, 58, 74)"
+      ],
+      "angle": 150,
+      "raw": "linear-gradient(150deg, rgb(11, 24, 34) 0%, rgb(18, 41, 58) 55%, rgb(14, 58, 74) 100%)"
+    }
+  ]
+}

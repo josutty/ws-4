@@ -1,0 +1,2 @@
+# Run options
+git: off

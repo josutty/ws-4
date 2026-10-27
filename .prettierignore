@@ -1,0 +1,12 @@
+dist
+coverage
+storybook-static
+playwright-report
+test-results
+public/mockServiceWorker.js
+src/shared/api/generated
+plan
+analysis
+notes
+inputs
+package-lock.json

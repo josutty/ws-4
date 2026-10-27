@@ -1,0 +1,207 @@
+openapi: 3.0.3
+info:
+  title: VECVplan Dealer Indent API
+  version: 1.0.0
+  description: Hybrid baseline generated from the partial backend contract.
+servers:
+  - url: https://api.vecvplan.example.com/api/v1
+security:
+  - bearerAuth: []
+paths:
+  /users/me:
+    get:
+      tags: [Identity]
+      summary: Get the signed-in dealer
+      operationId: getCurrentUser
+      x-mock: false
+      responses:
+        '200': {description: Current user and dealer scope, content: {application/json: {schema: {$ref: '#/components/schemas/CurrentUser'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/summary:
+    get:
+      tags: [Dealer indent]
+      summary: Load the dealer workbook header and totals
+      operationId: getDealerCycleSummary
+      x-mock: false
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}]
+      responses:
+        '200': {description: Dealer cycle summary, content: {application/json: {schema: {$ref: '#/components/schemas/DealerCycleSummary'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/indent-lines:
+    get:
+      tags: [Dealer indent]
+      summary: List dealer indent rows
+      operationId: listDealerIndentLines
+      x-mock: false
+      x-backend-gaps:
+        - vertical: needed by IndentWorkbookPage and WorkbookToolbar
+        - workbook filter parameters: needed by FilterRail
+        - additional sort fields: needed by IndentWorkbook
+      parameters:
+        - {$ref: '#/components/parameters/DealerId'}
+        - {$ref: '#/components/parameters/CycleId'}
+        - {$ref: '#/components/parameters/Page'}
+        - {$ref: '#/components/parameters/Size'}
+        - {$ref: '#/components/parameters/Sort'}
+        - {name: search, in: query, description: Search by FERT code or vehicle description., schema: {type: string}}
+        - {name: includeReference, in: query, schema: {type: boolean, default: true}}
+        - {name: collapsedGroups, in: query, style: form, explode: false, schema: {type: array, items: {type: string, enum: [pipeline]}}}
+      responses:
+        '200': {description: Paginated dealer indent rows, content: {application/json: {schema: {$ref: '#/components/schemas/IndentLinePage'}}}}
+        default: {$ref: '#/components/responses/Error'}
+    post:
+      tags: [Dealer indent]
+      summary: Add a FERT line to the dealer indent
+      operationId: addDealerIndentLine
+      x-mock: false
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/AddIndentLineRequest'}}}}
+      responses:
+        '201': {description: FERT line added, content: {application/json: {schema: {$ref: '#/components/schemas/IndentLine'}}}}
+        '409': {description: Combination already exists, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/indent-lines/{lineId}:
+    put:
+      tags: [Dealer indent]
+      summary: Save one indent cell
+      operationId: updateDealerIndentCell
+      x-mock: false
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}, {$ref: '#/components/parameters/LineId'}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/IndentCellUpdate'}}}}
+      responses:
+        '200': {description: Saved cell, content: {application/json: {schema: {$ref: '#/components/schemas/IndentCell'}}}}
+        '409': {description: Task is locked or expectedVersion is stale, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/indent-lines/batch:
+    put:
+      tags: [Dealer indent]
+      summary: Save multiple indent cells
+      operationId: batchUpdateDealerIndentCells
+      x-mock: false
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/IndentBatchUpdate'}}}}
+      responses:
+        '200': {description: All cells saved, content: {application/json: {schema: {$ref: '#/components/schemas/IndentBatchResult'}}}}
+        '207': {description: Some cells were rejected; inspect item errors, content: {application/json: {schema: {$ref: '#/components/schemas/IndentBatchResult'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/submit-preview:
+    get:
+      tags: [Submission]
+      summary: Preview dealer submission
+      operationId: getDealerSubmitPreview
+      x-mock: false
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}]
+      responses:
+        '200': {description: Submission preview, content: {application/json: {schema: {$ref: '#/components/schemas/SubmitPreview'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/submit:
+    post:
+      tags: [Submission]
+      summary: Submit the dealer indent
+      operationId: submitDealerIndent
+      x-mock: false
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/SubmitRequest'}}}}
+      responses:
+        '200': {description: Indent submitted, content: {application/json: {schema: {$ref: '#/components/schemas/SubmitResult'}}}}
+        '409': {description: Indent cannot be submitted in its current state, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /auth/login:
+    post:
+      tags: [Identity]
+      summary: Authenticate a dealer with dealer code or work email and password
+      operationId: loginDealer
+      x-mock: true
+      x-proposed: true
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/LoginRequest'}}}}
+      responses:
+        '200': {description: Signed-in dealer, content: {application/json: {schema: {$ref: '#/components/schemas/CurrentUser'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /auth/sso:
+    post:
+      tags: [Identity]
+      summary: Authenticate through VECVNet SSO
+      operationId: loginWithVecvnetSso
+      x-mock: true
+      x-proposed: true
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/SsoLoginRequest'}}}}
+      responses:
+        '200': {description: Signed-in dealer, content: {application/json: {schema: {$ref: '#/components/schemas/CurrentUser'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /auth/password-reset:
+    post:
+      tags: [Identity]
+      summary: Request a dealer password reset
+      operationId: requestPasswordReset
+      x-mock: true
+      x-proposed: true
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/PasswordResetRequest'}}}}
+      responses:
+        '202': {description: Password reset request accepted, content: {application/json: {schema: {$ref: '#/components/schemas/PasswordResetResult'}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/fert-catalogue:
+    get:
+      tags: [Dealer indent]
+      summary: List catalogue FERTs eligible to add
+      operationId: listFertCatalogue
+      x-mock: true
+      x-proposed: true
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}, {name: vertical, in: query, required: true, schema: {type: string}}, {name: search, in: query, schema: {type: string}}]
+      responses:
+        '200': {description: Eligible FERT catalogue items, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/FertCatalogueItem'}}}}}
+        default: {$ref: '#/components/responses/Error'}
+  /dealers/{dealerId}/cycles/{cycleId}/reopen:
+    post:
+      tags: [Submission]
+      summary: Reopen a submitted dealer indent before the cut-off
+      operationId: reopenDealerIndent
+      x-mock: true
+      x-proposed: true
+      parameters: [{$ref: '#/components/parameters/DealerId'}, {$ref: '#/components/parameters/CycleId'}, {$ref: '#/components/parameters/IdempotencyKey'}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ReopenRequest'}}}}
+      responses:
+        '200': {description: Dealer indent reopened, content: {application/json: {schema: {$ref: '#/components/schemas/ReopenResult'}}}}
+        default: {$ref: '#/components/responses/Error'}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+  parameters:
+    DealerId: {name: dealerId, in: path, required: true, schema: {type: string}}
+    CycleId: {name: cycleId, in: path, required: true, schema: {type: string}}
+    LineId: {name: lineId, in: path, required: true, schema: {type: string}}
+    Page: {name: page, in: query, schema: {type: integer, minimum: 0, default: 0}}
+    Size: {name: size, in: query, schema: {type: integer, minimum: 1, maximum: 500, default: 50}}
+    Sort: {name: sort, in: query, schema: {type: string}}
+    IdempotencyKey: {name: Idempotency-Key, in: header, required: true, schema: {type: string, format: uuid}}
+  responses:
+    Error: {description: Standard VECVplan error, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  schemas:
+    CurrentUser: {type: object, required: [userId, displayName, dealerMemberId, dealerCode, dealerName, roles], properties: {userId: {type: string, format: uuid}, displayName: {type: string}, dealerMemberId: {type: string}, dealerCode: {type: string}, dealerName: {type: string}, roles: {type: array, items: {type: string}}}}
+    DealerCycleSummary: {type: object, properties: {cycleId: {type: string}, cycleLabel: {type: string}, dealer: {type: object}, status: {type: string}, closesAt: {type: string, format: date-time}, lines: {type: integer}, totals: {type: object}, permissions: {type: object}}}
+    IndentLinePage:
+      type: object
+      required: [page, size, totalElements, items]
+      properties:
+        page: {type: integer}
+        size: {type: integer}
+        totalElements: {type: integer}
+        items:
+          type: array
+          items: {$ref: '#/components/schemas/IndentLine'}
+    IndentLine: {type: object, properties: {lineId: {type: string}, product: {type: object}, stock: {type: integer}, periods: {type: array}, version: {type: integer}}}
+    AddIndentLineRequest: {type: object, required: [productMemberId], properties: {productMemberId: {type: string}}}
+    IndentCellUpdate: {type: object, required: [taskId, measure, periodId, productMemberId, orgMemberId, value, expectedVersion], properties: {taskId: {type: string, format: uuid}, measure: {type: string}, periodId: {type: string}, productMemberId: {type: string}, orgMemberId: {type: string}, value: {type: integer, minimum: 0}, expectedVersion: {type: integer}}}
+    IndentBatchUpdate: {type: object, required: [taskId, cells], properties: {taskId: {type: string, format: uuid}, cells: {type: array, items: {$ref: '#/components/schemas/IndentCellUpdate'}}}}
+    IndentBatchResult: {type: object, properties: {saved: {type: array}, rejected: {type: array}}}
+    IndentCell: {type: object, properties: {factId: {type: string}, measure: {type: string}, periodId: {type: string}, value: {type: integer}, version: {type: integer}, updatedAt: {type: string, format: date-time}}}
+    SubmitPreview: {type: object, properties: {status: {type: string}, lines: {type: integer}, totals: {type: object}, warnings: {type: array}, recipient: {type: string}, reopenUntil: {type: string, format: date-time}}}
+    SubmitRequest: {type: object, required: [taskId, expectedVersion], properties: {taskId: {type: string, format: uuid}, expectedVersion: {type: integer}}}
+    SubmitResult: {type: object, properties: {taskId: {type: string}, status: {type: string}, submittedAt: {type: string, format: date-time}, recipient: {type: string}, reopenUntil: {type: string, format: date-time}}}
+    Error: {type: object, required: [errorCode, category, retryable, message, requestId], properties: {errorCode: {type: string}, category: {type: string}, retryable: {type: boolean}, message: {type: string}, requestId: {type: string, format: uuid}}}
+    LoginRequest: {type: object, x-proposed: true, required: [dealerCodeOrEmail, password], properties: {dealerCodeOrEmail: {type: string}, password: {type: string, format: password}}}
+    SsoLoginRequest: {type: object, x-proposed: true, required: [provider], properties: {provider: {type: string, enum: [VECVNet]}}}
+    PasswordResetRequest: {type: object, x-proposed: true, required: [dealerCodeOrEmail], properties: {dealerCodeOrEmail: {type: string}}}
+    PasswordResetResult: {type: object, x-proposed: true, required: [accepted], properties: {accepted: {type: boolean}}}
+    FertCatalogueItem: {type: object, x-proposed: true, required: [productMemberId, fertCode, description, vertical, added], properties: {productMemberId: {type: string}, fertCode: {type: string}, description: {type: string}, vertical: {type: string}, added: {type: boolean}}}
+    ReopenRequest: {type: object, x-proposed: true, required: [taskId, expectedVersion], properties: {taskId: {type: string, format: uuid}, expectedVersion: {type: integer}}}
+    ReopenResult: {type: object, x-proposed: true, required: [status, reopenUntil], properties: {status: {type: string, enum: [REOPENED]}, reopenUntil: {type: string, format: date-time}}}
